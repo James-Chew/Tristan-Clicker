@@ -13,6 +13,10 @@ struct ContentView: View {
     @State var pictureID = 1
     @State var player: AVAudioPlayer?
     @State var soonPerClick = 1
+    @State private var rotateAngle: Double = -5
+    @State var passiveSoon = 0
+    @State private var timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
+
 
     
     func playSound(named soundName: String) {
@@ -36,6 +40,7 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            Spacer()
             Button {
                 counter += soonPerClick
                 print(counter)
@@ -46,48 +51,80 @@ struct ContentView: View {
                         .resizable()
                         .frame(width: 200, height: 200)
                         .aspectRatio(contentMode: .fit)
+                        .rotationEffect(.degrees(rotateAngle))
+                        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: rotateAngle)
+                        .onAppear {
+                            rotateAngle = 5
+                        }
                 }
                 if (pictureID == 2){
                     Image("TRISTAN DRIP")
                         .resizable()
                         .frame(width: 200, height: 350)
                         .aspectRatio(contentMode: .fit)
+                        .rotationEffect(.degrees(rotateAngle))
+                        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: rotateAngle)
+                        .onAppear {
+                            rotateAngle = 5
+                        }
                 }
 
             }
-            Text("You have \(counter) $00Ns!")
-            Text("$00N per click: \(soonPerClick) $00Ns!")
-            HStack{
-                Button("GIVE HIM DRIP!")
-                {
-                    if (counter >= 100)
+            VStack{
+                
+                Text("You have \(counter) $00Ns!")
+                Text("$00N per click: \(soonPerClick) $00Ns!")
+                Text("Passive $00N Income: \(passiveSoon)")
+                HStack{
+                    Button("GIVE HIM DRIP!")
                     {
-                        print("Upgrade clicked")
-                        counter -= 100
-                        pictureID += 1
-                        playSound(named: "KACHING.mp3")
+                        if (counter >= 100)
+                        {
+                            print("Upgrade clicked")
+                            counter -= 100
+                            pictureID += 1
+                            playSound(named: "KACHING.mp3")
+                        }
                     }
+                    .frame(width: 100, height: 100)
+                    .buttonStyle(.borderedProminent)
+                    Button("GIVE HIM BETTER PAY!")
+                    {
+                        if (counter >= 50)
+                        {
+                            print("Upgrade clicked")
+                            counter -= 50
+                            soonPerClick += 1
+                            playSound(named: "KACHING.mp3")
+                        }
+                    }
+                    .frame(width: 150, height: 100)
+                    .buttonStyle(.borderedProminent)
+                    
                 }
-                .frame(width: 100, height: 100)
-                .buttonStyle(.borderedProminent)
-                Button("GIVE HIM BETTER PAY!")
+                Button("HE INVESTED IN PROPERTIES!")
                 {
                     if (counter >= 50)
                     {
                         print("Upgrade clicked")
                         counter -= 50
-                        soonPerClick += 1
+                        passiveSoon += 1
                         playSound(named: "KACHING.mp3")
                     }
                 }
                 .frame(width: 150, height: 100)
                 .buttonStyle(.borderedProminent)
+                Spacer()
+                Spacer()
             }
             
-
         }
         .navigationTitle("Tristan Clicker!")
-        .padding()
+        .onReceive(timer) { _ in
+            if passiveSoon > 0 {
+                counter += passiveSoon
+            }
+        }
     }
 }
 
