@@ -9,9 +9,10 @@ import SwiftUI
 import AVFoundation
 
 struct ContentView: View {
-    @State var counter = 100
+    @State var counter = 0
     @State var pictureID = 1
     @State var player: AVAudioPlayer?
+    @State var soonPerClick = 1
 
     
     func playSound(named soundName: String) {
@@ -36,7 +37,7 @@ struct ContentView: View {
     var body: some View {
         VStack {
             Button {
-                counter += 1
+                counter += soonPerClick
                 print(counter)
                 playSound(named: "meow.m4a")
             } label: {
@@ -55,15 +56,34 @@ struct ContentView: View {
 
             }
             Text("You have \(counter) $00Ns!")
-            Button("GIVE HIM DRIP!")
-            {
-                if (counter == 100)
+            Text("$00N per click: \(soonPerClick) $00Ns!")
+            HStack{
+                Button("GIVE HIM DRIP!")
                 {
-                    print("Upgrade clicked")
-                    counter -= 100
-                    pictureID += 1
+                    if (counter >= 100)
+                    {
+                        print("Upgrade clicked")
+                        counter -= 100
+                        pictureID += 1
+                        playSound(named: "KACHING.mp3")
+                    }
                 }
+                .frame(width: 100, height: 100)
+                .buttonStyle(.borderedProminent)
+                Button("GIVE HIM BETTER PAY!")
+                {
+                    if (counter >= 50)
+                    {
+                        print("Upgrade clicked")
+                        counter -= 50
+                        soonPerClick += 1
+                        playSound(named: "KACHING.mp3")
+                    }
+                }
+                .frame(width: 150, height: 100)
+                .buttonStyle(.borderedProminent)
             }
+            
 
         }
         .navigationTitle("Tristan Clicker!")
