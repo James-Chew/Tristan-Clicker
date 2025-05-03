@@ -36,6 +36,7 @@ struct ContentView: View {
         } catch {
             print("Error playing sound: \(error.localizedDescription)")
         }
+        print("Group 5am Chris was here ")
     }
     
     var body: some View {
