@@ -1,9 +1,8 @@
-
 //  ContentView.swift
-//  Tristan Clicker
+//  Tristan Clicker Deluxe™
 //
-//  Created by James on 3/5/25.
-//
+//  Created by James on 3/5/25. Copyright? lol.
+//  Updated by Chris on 3/5/25. No i own 0.00000001 percent of this app
 
 import SwiftUI
 import AVFoundation
@@ -17,113 +16,118 @@ struct ContentView: View {
     @State var passiveSoon = 0
     @State private var timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
 
-
-    
     func playSound(named soundName: String) {
-
         guard let path = Bundle.main.path(forResource: soundName, ofType:nil ) else {
-            print("path not created")
+            print("ERROR 404: sound '\(soundName)' not found. pls fix 🙏")
             return
         }
 
         let url = URL(fileURLWithPath: path)
-
 
         do {
             player = try AVAudioPlayer(contentsOf: url)
             player?.volume = 1.0
             player?.play()
         } catch {
-            print("Error playing sound: \(error.localizedDescription)")
+            print("🎧 Sound malfunction detected: \(error.localizedDescription)")
         }
-        print("Group 5am Chris was here ")
+        print("✨ 5am Chris was here ✨")
+        print("🚨 GIVE. HIM. $00N. 🚨")
     }
-    
+
     var body: some View {
         VStack {
             Spacer()
+            Text("$00N MASTER MODE")
+                .font(.largeTitle)
+                .bold()
             Button {
                 counter += soonPerClick
-                print(counter)
+                print("💰 You clicked! Total $00N: \(counter)")
                 playSound(named: "meow.m4a")
+                if counter >= 1000 {
+                    print("🚀 Tristan has transcended into CEO mode.")
+                }
             } label: {
-                if (pictureID == 1){
-                    Image("tristan og")
-                        .resizable()
-                        .frame(width: 200, height: 200)
-                        .aspectRatio(contentMode: .fit)
-                        .rotationEffect(.degrees(rotateAngle))
-                        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: rotateAngle)
-                        .onAppear {
-                            rotateAngle = 5
-                        }
+                Group {
+                    if pictureID == 1 {
+                        Image("tristan og")
+                            .resizable()
+                            .frame(width: 200, height: 200)
+                            .aspectRatio(contentMode: .fit)
+                    } else if pictureID == 2 {
+                        Image("TRISTAN DRIP")
+                            .resizable()
+                            .frame(width: 200, height: 350)
+                            .aspectRatio(contentMode: .fit)
+                    } else {
+                        Image("tristan godmode")
+                            .resizable()
+                            .frame(width: 250, height: 350)
+                            .aspectRatio(contentMode: .fit)
+                    }
                 }
-                if (pictureID == 2){
-                    Image("TRISTAN DRIP")
-                        .resizable()
-                        .frame(width: 200, height: 350)
-                        .aspectRatio(contentMode: .fit)
-                        .rotationEffect(.degrees(rotateAngle))
-                        .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: rotateAngle)
-                        .onAppear {
-                            rotateAngle = 5
-                        }
+                .rotationEffect(.degrees(rotateAngle))
+                .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: rotateAngle)
+                .onAppear {
+                    rotateAngle = 5
                 }
-
             }
-            VStack{
-                
-                Text("You have \(counter) $00Ns!")
-                Text("$00N per click: \(soonPerClick) $00Ns!")
-                Text("Passive $00N Income: \(passiveSoon)")
-                HStack{
-                    Button("GIVE HIM DRIP!")
-                    {
-                        if (counter >= 100)
-                        {
-                            print("Upgrade clicked")
+
+            VStack(spacing: 10) {
+                Text("🤑 Total $00Ns: \(counter)")
+                Text("👆 $00N per click: \(soonPerClick)")
+                Text("📈 Passive income: \(passiveSoon)/sec")
+
+                HStack(spacing: 20) {
+                    Button("👟 GIVE HIM DRIP!") {
+                        if counter >= 100 {
                             counter -= 100
-                            pictureID += 1
+                            pictureID = min(pictureID + 1, 3)
                             playSound(named: "KACHING.mp3")
+                            print("🔥 DRIP LEVEL INCREASED. swag ratio: 1000000x")
+                        } else {
+                            print("💀 Not enough $00N. Tristan is still basic.")
                         }
                     }
-                    .frame(width: 100, height: 100)
+                    .frame(width: 120, height: 100)
                     .buttonStyle(.borderedProminent)
-                    Button("GIVE HIM BETTER PAY!")
-                    {
-                        if (counter >= 50)
-                        {
-                            print("Upgrade clicked")
+
+                    Button("📈 GIVE HIM A RAISE!") {
+                        if counter >= 50 {
                             counter -= 50
                             soonPerClick += 1
                             playSound(named: "KACHING.mp3")
+                            print("💸 Productivity boost activated. Tristan now clicks harder.")
+                        } else {
+                            print("😞 Can’t afford raise. Capitalism wins again.")
                         }
                     }
-                    .frame(width: 150, height: 100)
+                    .frame(width: 160, height: 100)
                     .buttonStyle(.borderedProminent)
-                    
                 }
-                Button("HE INVESTED IN PROPERTIES!")
-                {
-                    if (counter >= 50)
-                    {
-                        print("Upgrade clicked")
+
+                Button("🏠 HE INVESTED IN NFT PROPERTIES") {
+                    if counter >= 50 {
                         counter -= 50
                         passiveSoon += 1
                         playSound(named: "KACHING.mp3")
+                        print("🏡 Passive income go brrr...")
+                    } else {
+                        print("😭 He can’t afford a tent.")
                     }
                 }
-                .frame(width: 150, height: 100)
+                .frame(width: 250, height: 100)
                 .buttonStyle(.borderedProminent)
-                Spacer()
-                Spacer()
             }
-            
+            Spacer()
+            Spacer()
         }
-        .navigationTitle("Tristan Clicker!")
+        .navigationTitle("Tristan Clicker™")
         .onReceive(timer) { _ in
             if passiveSoon > 0 {
                 counter += passiveSoon
+                print("⏱ Passive $00N added! Total: \(counter)")
             }
         }
     }
