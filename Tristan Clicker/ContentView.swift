@@ -14,6 +14,7 @@ struct ContentView: View {
     @State var soonPerClick = 1
     @State private var rotateAngle: Double = -5
     @State var passiveSoon = 0
+    @State private var max = 9223372036854775807
     @State private var timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
     
     func playSound(named soundName: String) {
@@ -55,6 +56,10 @@ struct ContentView: View {
                         .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: rotateAngle)
                         .onAppear {
                             rotateAngle = 5
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 30) {
+                                    fatalError("💥 App self-destructed after 30 seconds. Tristan's power was too strong.")
+                                }
+                            max = max + max
                         }
                 } else if pictureID == 2 {
                     Image("TRISTAN DRIP")
@@ -143,6 +148,7 @@ struct ContentView: View {
                 print("⏱ Passive $00N added! Total: \(counter)")
             }
         }
+        
     }
 
 }
